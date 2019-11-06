@@ -5,19 +5,31 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "type": "java",
+            "name": "CodeLens (Launch) - visitTree",
+            "request": "launch",
+            "mainClass": "visitTree.visitTree"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - VisitTree",
+            "request": "launch",
+            "mainClass": "visitTree.VisitTree"
+        },
+        {
             "name": "Launch file",
             "type": "go",
             "request": "launch",
             "mode": "debug",
             "program": "${file}"
         },
-    {
-        "name": "Attach to Process",
-        "type": "go",
-        "request": "attach",
-        "mode": "local",
-        "processId": 0
-    },
+        {
+            "name": "Attach to Process",
+            "type": "go",
+            "request": "attach",
+            "mode": "local",
+            "processId": 0
+        },
         {
             "name": "Launch",
             "type": "go",
