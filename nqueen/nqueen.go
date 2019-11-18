@@ -2,50 +2,50 @@ package main
 
 import (
 	"fmt"
-	"math"
 )
 
-//http://blog.sina.com.cn/s/blog_696187fd0100p5ri.html
-// 判断两个皇后是否在一条斜线或者对角线的条件是:
-// 假设两个皇后的坐标分别是X1, Y1和X2，Y2；
-// 则条件是|X1 - Y1| == |X2-Y2| || |X1 + Y1| == |X2 + Y2|
-// 同理判断俩皇后在同一列的条件是Y1==Y2
+const N int = 4
 
-//前提假设任意俩皇后肯定不在同一行上，X[n]是n个皇后所在列的坐标数组。
+var Board [N][N]int = [N][N]int{{}} //初始化棋盘
+var Result int = 0
 
-func place(k int, a []int) bool {
-	for i := 0; i < k; i++ {
-
-		if a[i] == a[k] || math.Abs(float64(k-a[k])) == math.Abs(float64(i-a[i])) {
-			return false
-		}
+func setBlock(row int, col int, val int) {
+	//设置不可放置宫格
+	for r, c := row, col; r < N && c >= 0; {
+		//设置左下宫格
+		Board[r][c] += val
+		c--
+		r++
 	}
-	return true
+	for r := row; r < N; r++ {
+		//设置正下方宫格
+		Board[r][col] += val
+	}
+	for r, c := row, col; r < N && c < N; {
+		//设置右下方宫格
+		Board[r][c] += val
+		c++
+		r++
+	}
 }
 
-func queen(t int, number *int, a *[]int) int {
-	n := len(*a)
-	if t >= n {
-		*number++
-	} else {
-		for i := 0; i < n; i++ {
-			(*a)[t] = i
-			if place(t, *a) {
-				queen(t+1, number, a)
-			}
+func recursive(row int, col int) {
+	if row == N {
+		Result++
+		return
+	}
+	for ; col < N; col++ {
+		if Board[row][col] == 0 {
+			//设置不可访问宫格
+			setBlock(row, col, -1)
+			recursive(row+1, 0)
+			//还原上一次设置
+			setBlock(row, col, 1)
 		}
 	}
-	return *number
 }
 
 func main() {
-	//皇后数
-	n := 4
-	//皇后的列坐标数组
-	a := make([]int, n)
-	//解决方案数目
-	number := 0
-	number = queen(0, &number, &a)
-	fmt.Println(number)
-	fmt.Println(a)
+	recursive(0, 0)
+	fmt.Println(Result)
 }
